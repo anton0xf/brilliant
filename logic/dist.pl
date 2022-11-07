@@ -1,6 +1,10 @@
-dist(N, A, B, [A | L]) :- nth0(N, L, B), !.
-dist(N, A, B, [B | L]) :- nth0(N, L, A), !.
-dist(N, A, B, [_ | L]) :- dist(N, A, B, L).
+search(X, [X | R], R).
+search(X, [_, H | L], R) :- search(X, [H | L], R).
+
+%?- L = [_, _], search(a, L, R).
+
+dist(N, A, B, L) :- search(A, L, R), nth0(N, R, B).
+dist(N, A, B, L) :- search(B, L, R), nth0(N, R, A).
 
 :- begin_tests(dist).
 test(d0no2, [fail]) :- dist(0, a, b, [a, c]).
@@ -36,8 +40,14 @@ test(inv4middle) :- next_to(a, b, [c, b, a, d]).
 :- end_tests(next_to).
 
 %?- run_tests.
-%@ % PL-Unit: dist ........ done
-%@ % PL-Unit: next_to .............. done
+%% TODO: solve "Test succeeded with choicepoint" issue
+%@  done
 %@ % All 22 tests passed
 %@ true.
 
+%?- L = [_, _, _, _], dist(1, a, b, L).
+%@ L = [a, _, b, _] ;
+%@ L = [_, a, _, b] ;
+%@ L = [b, _, a, _] ;
+%@ L = [_, b, _, a] ;
+%@ false.
