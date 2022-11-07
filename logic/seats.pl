@@ -1,3 +1,5 @@
+%% https://brilliant.org/courses/logic-deduction/introduction-68/strategic-deductions-2/8/
+
 %% How can the robots be seated to satisfy these requests?
 %% 1. There is exactly one seat between Rae and Mig.
 %% 2. There are either 2 or 3 seats between Lex and Knuck.
