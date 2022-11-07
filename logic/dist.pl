@@ -1,7 +1,12 @@
-search(X, [X | R], R).
-search(X, [_, H | L], R) :- search(X, [H | L], R).
+%% search(T, H, X, R) - search X in list [H | T]. returns rest of the list after X
+%% T - tail
+%% H - head
+%% X - search it
+%% R - rest
+search_(R, X, X, R).
+search_([H | T], _, X, R) :- search_(T, H, X, R).
 
-%?- L = [_, _], search(a, L, R).
+search(X, [Y | L], R) :- search_(L, Y, X, R).
 
 dist(N, A, B, L) :- search(A, L, R), nth0(N, R, B).
 dist(N, A, B, L) :- search(B, L, R), nth0(N, R, A).
@@ -44,6 +49,11 @@ test(inv4middle) :- next_to(a, b, [c, b, a, d]).
 %@  done
 %@ % All 22 tests passed
 %@ true.
+
+%?- trace.
+%@ true.
+
+%?- L = [_, _, _], dist(1, a, b, L).
 
 %?- L = [_, _, _, _], dist(1, a, b, L).
 %@ L = [a, _, b, _] ;
