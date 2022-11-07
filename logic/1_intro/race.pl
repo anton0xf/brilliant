@@ -1,3 +1,5 @@
+%% https://brilliant.org/courses/logic-deduction/introduction-68/harder-challenges/5/
+
 %% In the next race, five robots compete. They report these:
 %% c1 * Marv finishes either second or fourth.
 %% c2 * Rae finishes either first or fifth.
