@@ -1,5 +1,9 @@
-/target
-/classes
+.*
+!.gitignore
+
+# clojure
+/target/
+/classes/
 /checkouts
 pom.xml
 pom.xml.asc
