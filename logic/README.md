@@ -1,5 +1,6 @@
-Solutions for some tasks from
-[Logic](https://brilliant.org/courses/logic-deduction/) course
+Solutions for some tasks from "Logic and Deduction" track
+
+# [Logic](https://brilliant.org/courses/logic-deduction/) course
 
 ## 01_intro
 1. [Order Logic](https://brilliant.org/courses/logic-deduction/introduction-68/warmup-puzzles/)
