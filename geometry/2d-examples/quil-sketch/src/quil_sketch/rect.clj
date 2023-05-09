@@ -15,7 +15,7 @@
   (q/rect (:x @state) (:y @state) 50 50))
 
 (defn mouse-dragged []
-  (swap! state assoc :x q/mouse-x :y q/mouse-y))
+  (swap! state assoc :x (q/mouse-x) :y (q/mouse-y)))
 
 (q/defsketch my-sketch
   :title "Sketch with moving rectangle"
