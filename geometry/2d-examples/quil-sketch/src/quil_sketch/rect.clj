@@ -16,9 +16,6 @@
   (q/point 0 0)
   (q/rect (:x rect) (:y rect) (:size rect) (:size rect)))
 
-(defn- update-movement [state event]
-  (assoc-in state [:movement :prev] (get-xy event)))
-
 (defn in-rect? [rect xy]
   (let [{:keys [x y]} xy
         {rx :x ry :y r-size :size} rect]
@@ -30,10 +27,16 @@
   (let [prev (get-xy event :p-x :p-y)
         cur (get-xy event)
         dxy (-xy cur prev)]
-    (cond (and (= :left (:button event))
-               (in-rect? (:rect state) prev))
-          (update state :rect #(assoc-xy % (+xy % dxy)))
-          :else state)))
+    (cond
+      ;; move rect
+      (and (= :left (:button event))
+           (in-rect? (:rect state) prev))
+      (update state :rect #(assoc-xy % (+xy % dxy)))
+      ;; move plane
+      (= :left (:button event))
+      state ;; TODO
+      ;; do nothing
+      :else state)))
 
 (q/defsketch drag-sketch
   :title "Sketch with moving rectangle"
@@ -43,3 +46,4 @@
   :mouse-clicked mouse-clicked
   :mouse-dragged mouse-dragged
   :middleware [m/fun-mode])
+
