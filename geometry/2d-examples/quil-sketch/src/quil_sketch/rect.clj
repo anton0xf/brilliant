@@ -11,9 +11,15 @@
 
 (defn draw [{:keys [rect] :as state}]
   (q/background 255)
+  ;; [0, 0]
+  (q/stroke-weight 10)
+  (q/stroke 255 50 50)
+  (q/fill 255 100 100)
+  (q/point 0 0)
+  ;; rect
+  (q/stroke-weight 2)
   (q/stroke 0)
   (q/fill 200)
-  (q/point 0 0)
   (q/rect (:x rect) (:y rect) (:size rect) (:size rect)))
 
 (defn in-rect? [rect xy]
