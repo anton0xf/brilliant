@@ -12,7 +12,15 @@
   (xy (- x1 x2)
       (- y1 y2)))
 
-(defn get-xy [m] (xy (:x m) (:y m)))
+(defn norm-xy [{:keys [x y]}]
+  (Math/sqrt (+ (* x x) (* y y))))
+
+(defn distance-xy [a b]
+  (norm-xy (-xy a b)))
+
+(defn get-xy
+  ([m] (get-xy m :x :y))
+  ([m kx ky] (xy (kx m) (ky m))))
 
 (defn assoc-xy [m {:keys [x y]}]
   (assoc m :x x :y y))
