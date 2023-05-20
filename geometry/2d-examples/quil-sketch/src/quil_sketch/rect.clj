@@ -49,7 +49,6 @@
   :setup setup
   :update identity
   :draw draw
-  :mouse-clicked mouse-clicked
   :mouse-dragged mouse-dragged
-  :middleware [m/fun-mode])
-
+  :navigation-2d {:mouse-buttons #{}}
+  :middleware [m/fun-mode m/navigation-2d])
