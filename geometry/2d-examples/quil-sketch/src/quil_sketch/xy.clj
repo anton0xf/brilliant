@@ -2,6 +2,8 @@
 
 (defn xy [x y] {:x x :y y})
 
+(defn xy->vec [{:keys [x y]}] [x y])
+
 (defn +xy [{x1 :x y1 :y}
            {x2 :x y2 :y}]
   (xy (+ x1 x2)
@@ -11,6 +13,13 @@
            {x2 :x y2 :y}]
   (xy (- x1 x2)
       (- y1 y2)))
+
+(defn *xy [{:keys [x y]} k]
+  (xy (* x k) (* y k)))
+
+(defn div-xy [{:keys [x y]} & ks]
+  (xy (apply / x ks)
+      (apply / y ks)))
 
 (defn norm-xy [{:keys [x y]}]
   (Math/sqrt (+ (* x x) (* y y))))

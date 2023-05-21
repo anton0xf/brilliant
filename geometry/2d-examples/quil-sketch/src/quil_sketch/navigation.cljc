@@ -1,5 +1,6 @@
 (ns quil-sketch.navigation
-  (:require [quil.core :as q :include-macros true]))
+  (:require [quil-sketch.xy :refer :all]
+            [quil.core :as q :include-macros true]))
 
 (def ^:private ^String missing-navigation-key-error
   (str "state map is missing :navigation key. "
@@ -17,8 +18,8 @@
   "Default position configuration: zoom is neutral
   and central point is `width/2, height/2`."
   []
-  {:position [(/ (q/width) 2.0)
-              (/ (q/height) 2.0)]
+  {:position (let [wh (xy (q/width) (q/height))]
+               (div-xy wh 2))
    :zoom 1})
 
 (defn- setup-nav
@@ -38,13 +39,10 @@
   (assert-state-has-navigation state)
   (if (not= :left (:button event))
     state
-    ;; TODO refactor using xy
-    (let [dx (- (:p-x event) (:x event))
-          dy (- (:p-y event) (:y event))
-          zoom (-> state :navigation :zoom)]
-      (-> state
-          (update-in [:navigation :position 0] + (/ dx zoom))
-          (update-in [:navigation :position 1] + (/ dy zoom))))))
+    (let [dxy (-xy (get-xy event)
+                   (get-xy event :p-x :p-y))
+          zoom (get-in state [:navigation :zoom])]
+      (update-in state [:navigation :position] -xy (div-xy dxy zoom)))))
 
 (defn- mouse-wheel
   "Changes zoom settings based on scroll."
@@ -76,11 +74,17 @@
   (let [nav (:navigation state)
         zoom (:zoom nav)
         pos (:position nav)
-        debug (:debug nav)]
+        debug (:debug nav)
+        wh (xy (q/width) (q/height))
+        ;; Sb = k*(Sn + r)
+        ;; d = wh/(2*z) - pos
+        ;; d0 = wh/2 * (1/z - 1) = 0
+        dxy (-xy (div-xy wh 2 zoom) pos)]
     (q/push-matrix)
     (q/scale zoom)
-    (q/with-translation [(- (/ (q/width) 2 zoom) (first pos))
-                         (- (/ (q/height) 2 zoom) (second pos))]
+    (q/with-translation (xy->vec dxy)
+      ;; (println "Matrix")
+      ;; (q/print-matrix)
       (user-draw state)
       (when debug (draw-oxy [100 150 200])))
     (q/pop-matrix)))
