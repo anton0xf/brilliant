@@ -50,8 +50,7 @@
            (in-rect? (:rect state) prev))
       (update state :rect #(assoc-xy % (+xy % dxy)))
       ;; move plane
-      (= :left (:button event))
-      (navigation-mouse-dragged state event)
+      (= :left (:button event)) (navigation-mouse-dragged)
       ;; do nothing
       :else state)))
 

@@ -94,26 +94,38 @@
       (when debug (draw-oxy [100 150 200])))
     (q/pop-matrix)))
 
+(defn translate-event [state event]
+  (let [zoom (get-in state [:navigation :zoom])
+        dxy (get-translation state)
+        xy (-> event (get-xy) (div-xy zoom) (-xy dxy))
+        {px :x py :y} (-> event (get-xy :p-x :p-y) (div-xy zoom) (-xy dxy))]
+    (println {:translation dxy})
+    (-> event
+        (merge {:p-x px :p-y py})
+        (merge xy))))
+
 (defn navigation
   "Enables navigation over sketch. Dragging mouse will move center of the
   sketch and mouse wheel controls zoom."
   [options]
-  (let [; navigation related user settings
+  (let [;; navigation related user settings
         user-navigation-settings (:navigation options)
         ;; user-provided handlers which will be overridden by navigation
         user-draw (:draw options (fn [state]))
+        user-mouse-moved (:mouse-moved options (fn [state _] state))
         ;; user's mouse-dragged fn accept arguments:
-        ;; state, event, navigation mouse-dragged function
+        ;; state, event, navigation mouse-dragged callback
         user-mouse-dragged (:mouse-dragged options (fn [state _ _] state))
         user-mouse-wheel (:mouse-wheel options (fn [state _] state))
         setup (:setup options (fn [] {}))]
     (assoc options
            :setup (partial setup-nav setup user-navigation-settings)
-
            :draw (fn [state] (draw user-draw state))
-
+           :mouse-moved (fn [state event]
+                          (user-mouse-moved state (translate-event state event)))
            :mouse-dragged (fn [state event]
-                            (user-mouse-dragged state event mouse-dragged))
-
+                            (user-mouse-dragged state
+                                                (translate-event state event)
+                                                #(mouse-dragged state event)))
            :mouse-wheel (fn [state event]
                           (user-mouse-wheel (mouse-wheel state event) event)))))
