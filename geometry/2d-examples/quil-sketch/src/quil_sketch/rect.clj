@@ -7,19 +7,18 @@
 (defn setup []
   (q/frame-rate 15)
   (q/color-mode :rgb)
-  (q/stroke-weight 2)
-  {:dot {:x 0 :y 0 :weight 10}
-   :rect {:x 0 :y 0 :size 50 :weight 2}})
+  {:dot {:x 0 :y 0}
+   :rect {:x 0 :y 0 :size 50}})
 
 (defn draw [{:keys [dot rect] :as state}]
   (q/background 255)
   ;; dot
-  (q/stroke-weight (:weight dot))
+  (q/stroke-weight (if (:active dot) 15 10))
   (q/stroke 255 50 50)
   (q/fill 255 100 100)
   (q/point (:x dot) (:y dot))
   ;; rect
-  (q/stroke-weight (:weight rect))
+  (q/stroke-weight (if (:active rect) 4 2))
   (q/stroke 0)
   (q/fill 200)
   (q/rect (:x rect) (:y rect) (:size rect) (:size rect)))
