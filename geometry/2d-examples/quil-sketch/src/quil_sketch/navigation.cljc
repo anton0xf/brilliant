@@ -14,12 +14,13 @@
     (throw #?(:clj (RuntimeException. missing-navigation-key-error)
               :cljs (js/Error. missing-navigation-key-error)))))
 
+(defn- qwh [] (xy (q/width) (q/height)))
+
 (defn- default-position
   "Default position configuration: zoom is neutral
   and central point is `width/2, height/2`."
   []
-  {:position (let [wh (xy (q/width) (q/height))]
-               (div-xy wh 2))
+  {:position (div-xy (qwh) 2)
    :zoom 1})
 
 (defn- setup-nav
@@ -66,6 +67,15 @@
       (draw-point t t)
       (draw-point t (- t)))))
 
+(defn get-translation [state]
+  (let [nav (:navigation state)
+        zoom (:zoom nav)
+        pos (:position nav)]
+    ;; Sb = k*(Sn + r)
+    ;; d = wh/(2*z) - pos
+    ;; d0 = wh/2 * (1/z - 1) = 0
+    (-xy (div-xy (qwh) 2 zoom) pos)))
+
 (defn- draw
   "Calls user draw function with all necessary transformations
   (position and zoom) applied."
@@ -73,13 +83,8 @@
   (assert-state-has-navigation state)
   (let [nav (:navigation state)
         zoom (:zoom nav)
-        pos (:position nav)
-        debug (:debug nav)
-        wh (xy (q/width) (q/height))
-        ;; Sb = k*(Sn + r)
-        ;; d = wh/(2*z) - pos
-        ;; d0 = wh/2 * (1/z - 1) = 0
-        dxy (-xy (div-xy wh 2 zoom) pos)]
+        dxy (get-translation state)
+        debug (:debug nav)]
     (q/push-matrix)
     (q/scale zoom)
     (q/with-translation (xy->vec dxy)
