@@ -1,8 +1,7 @@
 (defproject swing-drag "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
-  :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
-            :url "https://www.eclipse.org/legal/epl-2.0/"}
+  :description "Example of dragging square by plane with navigation abilities"
+  :url "https://github.com/anton0xf/brilliant"
+  :license {:name "public domain" :url "https://unlicense.org"}
   :dependencies [[org.clojure/clojure "1.11.1"]]
   :main ^:skip-aot swing-drag.core
   :target-path "target/%s"
