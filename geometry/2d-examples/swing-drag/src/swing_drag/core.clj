@@ -1,31 +1,30 @@
 (ns swing-drag.core
   (:gen-class)
-  (:require [seesaw.core :refer :all]))
+  (:require [seesaw.core :refer :all]
+            [swing-drag.util :refer :all]))
 
-(def f (frame :title "Get to know Seesaw"))
-(def lbl (label "I'm another label"))
-(defn display [content]
-  (config! f :content content)
-  content)
-(def b (button :text "Click Me"))
+(native!)
 
-(defn -main
-  [& args]
-  ;; example from https://gist.github.com/daveray/1441520
-  (native!)
-  (-> f pack! show!)
-  (config f :title)
-  (config! f :title "No RLY, get to know Seesaw!")
-  (config! f :content "This is some content")
-  (config! f :content lbl)
-  (pack! f)
-  (display lbl)
-  (config! lbl :background :pink :foreground "#00f")
-  (config! lbl :font "ARIAL-BOLD-21")
-  (alert "I'm an alert")
-  (input "What's your favorite color?")
-  ;; => "blue"
-  (display b)
-  (listen b :action (fn [e] (alert e "Thanks!")))
-  ;; (*1) ;; unregister action
+(def scene (canvas))
+
+(def main-pane (border-panel :center scene
+                             :south "Status panel"))
+
+(def main-frame
+  (frame :title "Dragging square"
+         :on-close :exit
+         :size [300 :by 100]
+         :content main-pane))
+
+(comment
+  (config! main-frame :content main-pane)
+  (config! main-pane :center scene)
+  (.repaint main-pane)
   )
+
+(defn -main [& args]
+  (invoke-later
+   (-> main-frame
+       ;; pack!
+       ;; maximize-frame!
+       show!)))
