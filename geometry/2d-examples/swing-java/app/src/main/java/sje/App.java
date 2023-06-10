@@ -3,8 +3,19 @@
  */
 package sje;
 
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * example inspired by Listing 10.3 from Core Java 11th (page 584)
+ */
 public class App {
     public static void main(String[] args) {
-
+        EventQueue.invokeLater(() -> {
+            DrawFrame frame = new DrawFrame();
+            frame.setTitle("Draw test");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.setVisible(true);
+        });
     }
 }
