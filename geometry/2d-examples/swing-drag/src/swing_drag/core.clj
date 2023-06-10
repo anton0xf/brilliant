@@ -10,16 +10,14 @@
   (let [w (.getWidth c)
         h (.getHeight c)
         line-style (g2/style :foreground java.awt.Color/RED
-                             :stroke (g2/stroke :width 5))]
+                             :stroke (g2/stroke :width 0.005))]
     (g2/push
      g (doto g
-         ;; (g2/anti-alias)
-         ;; (.setRenderingHint java.awt.RenderingHints/KEY_ANTIALIASING
-         ;;                    java.awt.RenderingHints/VALUE_ANTIALIAS_OFF)
+         (g2/scale w h)
          (draw-styled
           line-style
-          (g2/line 0 0 w h)
-          (g2/line w 0 0 h))))))
+          (g2/line 0 0 1 1)
+          (g2/line 1 0 0 1))))))
 
 (def scene (canvas :paint #(paint-scene %1 %2)))
 (def status-panel (label "Status panel"))
