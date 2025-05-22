@@ -10,6 +10,8 @@
 %% 2. Ott — "I do not have the master key."
 %% 3. Jett — "Ig doesn't have the master key."
 
+:- use_module(library(clpb)).
+
 answer(T, M) :- % Trust, Master
     T = [I, O, J],
     sat(card([1], T)),

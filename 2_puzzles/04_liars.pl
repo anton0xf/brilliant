@@ -5,6 +5,8 @@
 %% 3. Loy — "At least two of us are lying."
 %% 4. Var — "Loy is lying."
 
+:- use_module(library(clpb)).
+
 answer(X) :-
     X = [D, M, L, V],
     sat(D =:= *(X)),

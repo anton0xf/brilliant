@@ -5,6 +5,8 @@
 %% 3. Yan — "Kit is lying."
 %% 4. Ash — Gom is lying, or Kit is lying.
 
+:- use_module(library(clpb)).
+
 answer(L) :-
     L = [G, K, Y, A],
     sat(G =:= Y),
